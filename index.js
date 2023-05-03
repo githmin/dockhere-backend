@@ -5,8 +5,11 @@ const app = express();
 const port = process.env.port || 3001;
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const {jwtAuthCookie} = require('./middlewear/jwtAuthCookie')
 
 const AuthenticationHandeller = require("./controller/AuthenticationHandeller");
+const ContainerHandeller = require("./controller/ContainerHandeller");
+
 
 app.use(
   cors({
@@ -50,7 +53,10 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.use("/api/auth", AuthenticationHandeller);
+app.use("/api/container", jwtAuthCookie, ContainerHandeller);
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
