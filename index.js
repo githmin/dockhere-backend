@@ -10,7 +10,18 @@ const AuthenticationHandeller = require("./controller/AuthenticationHandeller");
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // use your actual domain name (or localhost), using * is not recommended
+    origin: [
+      "http://127.0.0.1:3000",
+      "http://localhost:3000",
+      "https://dockhere.helpinghands.tk",
+      "http://dockhere.helpinghands.tk",
+      "https://sql2.helpinghands.tk",
+      "http://sql2.helpinghands.tk",
+      "http://localhost:3001",
+      "http://127.0.0.1",
+      "http://localhost:5173",
+      "http://localhost:5174",
+    ], // use your actual domain name (or localhost), using * is not recommended
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
