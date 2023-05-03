@@ -85,8 +85,10 @@ router.post("/", async (req, res) => {
                 res.send({
                   domain: `${process.env.host}`,
                   port: assignedPort.toString(),
-                  username: req.user.userObj.email,
+                  username: "root",
                   password: "password",
+                  os: "Ubuntu 22.04",
+                  ram: "36MiB",
                 });
               }
             });
@@ -120,7 +122,6 @@ router.post("/", async (req, res) => {
 
 router.get("/stats", async (req, res) => {
   var container = docker.getContainer(`${req.user.userObj._id}`);
-
   container.stats({ stream: false }, function (err, stats) {
     if (err) {
       // console.error(err);
@@ -148,8 +149,9 @@ router.get("/stats", async (req, res) => {
             uptime: "N/A",
             domain: `${process.env.host}`,
             port: assignedPort.toString(),
-            username: req.user.userObj.email,
+            username: "root",
             password: "password",
+            os: "Ubuntu 22.04",
           });
         }
       });
