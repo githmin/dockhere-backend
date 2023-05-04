@@ -13,10 +13,10 @@ router.post("/", async (req, res) => {
   } else {
     delete user.password;
     const token = await jwt.sign({ userObj }, process.env.secret);
-    res.cookie("token", token , { 
-    sameSite: 'none', 
-    secure: true 
-  });
+    res.cookie("token", token, {
+      sameSite: "none",
+      secure: true,
+    });
     res.sendStatus(200);
   }
 });
@@ -28,13 +28,18 @@ router.post("/register", async (req, res) => {
   });
 
   try {
-
     await newUser.save();
     res.sendStatus(200);
   } catch (e) {
-      console.log(e)
+    console.log(e);
 
     res.send({ status: 400, error: e });
   }
 });
+
+router.get("/logout", async (req, res) => {
+  res.clearCookie("token");
+  res.sendStatus(200);
+});
+
 module.exports = router;
