@@ -23,14 +23,17 @@ router.post("/", async (req, res) => {
 
 router.post("/register", async (req, res) => {
   const newUser = new user({
-    email: req.body.email,
+    username: req.body.username,
     password: req.body.password,
   });
 
   try {
+
     await newUser.save();
     res.sendStatus(200);
   } catch (e) {
+      console.log(e)
+
     res.send({ status: 400, error: e });
   }
 });
