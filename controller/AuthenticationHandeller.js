@@ -13,7 +13,10 @@ router.post("/", async (req, res) => {
   } else {
     delete user.password;
     const token = await jwt.sign({ userObj }, process.env.secret);
-    res.cookie("token", token);
+    res.cookie("token", token , { 
+    sameSite: 'none', 
+    secure: true 
+  });
     res.sendStatus(200);
   }
 });
