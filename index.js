@@ -13,6 +13,8 @@ const ContainerHandeller = require("./controller/ContainerHandeller");
 app.use(
   cors({
     origin: [
+   	"http://dockhere-frontend.vercel.app",
+      "https://dockhere-frontend.vercel.app",
       "http://127.0.0.1:3000",
       "http://localhost:3000",
       "https://dockhere.helpinghands.tk",
