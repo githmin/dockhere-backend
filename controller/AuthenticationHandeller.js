@@ -17,4 +17,18 @@ router.post("/", async (req, res) => {
     res.sendStatus(200);
   }
 });
+
+router.post("/register", async (req, res) => {
+  const newUser = new user({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  try {
+    await newUser.save();
+    res.sendStatus(200);
+  } catch (e) {
+    res.send({ status: 400, error: e });
+  }
+});
 module.exports = router;
