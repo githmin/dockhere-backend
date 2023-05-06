@@ -58,7 +58,7 @@ router.post("/register", async (req, res) => {
     const token = jwt.sign({ email: newUser.email }, process.env.secret, {
       expiresIn: "1d",
     });
-    const verificationLink = `${process.env.frontend}/api/auth/verify-email?token=${token}`;
+    const verificationLink = `${process.env.host}/api/auth/verify-email?token=${token}`;
 
     const mailOptions = {
       from: process.env.emailUserName,
