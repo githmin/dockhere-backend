@@ -93,6 +93,68 @@ router.get("/verify-email", async (req, res) => {
   }
 });
 
+
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  const userObj = await user.findOne({ email });
+
+  if (!userObj) {
+    res.sendStatus(404);
+    return;
+  }
+
+  const token = jwt.sign({ email }, process.env.secret, {
+    expiresIn: "1d",
+  });
+
+  const resetLink = `${process.env.host}/api/auth/reset-password?token=${token}`;
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.emailHost,
+    port: process.env.emailPort,
+    secure: process.env.isEmailSSL, // use SSL
+    auth: {
+      user: process.env.emailUserName,
+      pass: process.env.emailPass, 
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.emailUserName,
+    to: email,
+    subject: "Password Reset Request",
+    html: `Please click on the following link to reset your password: <a href="${resetLink}">${resetLink}</a>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+
+  res.sendStatus(200);
+});
+
+router.post("/reset-password", async (req, res) => {
+  const { token, password } = req.body;
+  try {
+    const decodedToken = jwt.verify(token, process.env.secret);
+    const userEmail = decodedToken.email;
+
+    const userObj = await user.findOne({ email: userEmail });
+
+    if (!userObj) {
+      res.sendStatus(404);
+      return;
+    }
+
+    userObj.password = password;
+    await userObj.save();
+
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e);
+    res.send({ status: 400, error: e });
+  }
+});
+
+
 router.post("/logout", async (req, res) => {
   res.clearCookie("token");
   res.sendStatus(200);
