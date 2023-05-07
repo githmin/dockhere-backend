@@ -107,7 +107,7 @@ router.post("/forgot-password", async (req, res) => {
     expiresIn: "1d",
   });
 
-  const resetLink = `${process.env.host}/api/auth/reset-password?token=${token}`;
+  const resetLink = `${process.env.frontend}/reset-password/${token}`;
 
   const transporter = nodemailer.createTransport({
     host: process.env.emailHost,
